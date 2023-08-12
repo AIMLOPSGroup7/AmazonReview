@@ -1,0 +1,7 @@
+-r requirements.txt
+
+# testing requirements
+pytest==7.4.0
+pylint==2.17.4
+black==23.3.0
+build==0.10.0
