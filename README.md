@@ -1,1 +1,2 @@
 # AmazonReview
+folder structure
