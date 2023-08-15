@@ -26,7 +26,7 @@ def test_make_prediction(sample_input_data):
     
     # Then
     assert y_pred is not None
-    assert y_pred in ['cat', 'dog']
+    assert y_pred in ['positive', 'negative']
     assert results['version'] == _version
 
 
