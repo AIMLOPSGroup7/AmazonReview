@@ -2,5 +2,5 @@
  Sentiment Classification on Amazon Food Reviews
 
 
- coding in progress....trying to finish by tomorrow eod
+ coding in progress....trying to finish by today
  
