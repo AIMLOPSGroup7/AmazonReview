@@ -1,24 +1,25 @@
+
 # Path setup, and access the config.yml file, datasets folder & trained models
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+sys.path.append(str(Path(__file__).parent.parent))
 
 from pathlib import Path
 from typing import Dict, List
-
 from pydantic import BaseModel
 from strictyaml import YAML, load
 
 import sentiment_model
 
 # Project Directories
-PACKAGE_ROOT = Path(sentiment_model_model.__file__).resolve().parent
+PACKAGE_ROOT = Path(sentiment_model.__file__).resolve().parent
 ROOT = PACKAGE_ROOT.parent
 CONFIG_FILE_PATH = PACKAGE_ROOT / "config.yml"
-#print(CONFIG_FILE_PATH)
-
-DATASET_DIR = PACKAGE_ROOT / "datasets/data"
+DATASET_DIR = PACKAGE_ROOT / "datasets"
 TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_models"
+
+
+print("TEST msg", PACKAGE_ROOT)
 
 class AppConfig(BaseModel):
     """
@@ -26,36 +27,36 @@ class AppConfig(BaseModel):
     """
 
     package_name: str
-    train_path: str
-    validation_path: str
-    test_path: str
-    model_name: str
-    model_save_file: str
+    training_data_file: str
+    test_data_file: str
+    pipeline_save_file: str
+
 
 class ModelConfig(BaseModel):
     """
     All configuration relevant to model
     training and feature engineering.
     """
-        
-    image_size: List[int]
-    batch_size: int
-    scaling_factor: float
-    rotation: float
-    zoom: float
-    flip: str
 
+    target: str
+    features: List[str]
+    unused_fields: List[str]
+    Id: int
+    ProductId: str
+    UserId: str
+    ProfileName: str	
+    HelpfulnessNumerator: int
+    HelpfulnessDenominator: int
+    Score: int
+    Time: str	
+    Summary: str
+    Text: str
+
+    test_size:float
     random_state: int
-    input_shape: List[int]
-    epochs: int
-    optimizer: str
-    loss: str
-    accuracy_metric: str
-    verbose: int
-    earlystop: int
-    monitor: str
-    save_best_only: bool
-    label_mappings: Dict[int, str]
+    n_estimators: int
+    max_depth: int
+
 
 class Config(BaseModel):
     """Master config object."""
@@ -63,12 +64,11 @@ class Config(BaseModel):
     app_config: AppConfig
     model_config: ModelConfig
 
+
 def find_config_file() -> Path:
     """Locate the configuration file."""
-    
     if CONFIG_FILE_PATH.is_file():
         return CONFIG_FILE_PATH
-    
     raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
 
 
@@ -82,7 +82,6 @@ def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
         with open(cfg_path, "r") as conf_file:
             parsed_config = load(conf_file.read())
             return parsed_config
-        
     raise OSError(f"Did not find config file at path: {cfg_path}")
 
 
@@ -93,8 +92,8 @@ def create_and_validate_config(parsed_config: YAML = None) -> Config:
 
     # specify the data attribute from the strictyaml YAML type.
     _config = Config(
-        app_config = AppConfig(**parsed_config.data),
-        model_config = ModelConfig(**parsed_config.data),
+        app_config=AppConfig(**parsed_config.data),
+        model_config=ModelConfig(**parsed_config.data),
     )
 
     return _config

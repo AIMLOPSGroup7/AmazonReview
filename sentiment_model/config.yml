@@ -1,22 +1,41 @@
+
 # Package Overview
-package_name: amazonreview
+package_name: amazon_sentiment_model
 
 # Data Files
-train_path: train
-validation_path: validation
-test_path: test
+training_data_file: Reviews.csv
+test_data_file: test.csv
+
+# Variables
+target: Sentiment
+
+pipeline_name: sentiment_model
+pipeline_save_file: sentiment_model_output_v
+
+features:      # final features to be use
+  - Text
 
 
-model_name: amazonreview_model
-model_save_file: amazonreview_model_output_v
+unused_fields:  # Features to drop before pipeline
+  - Id
+  - ProductId
+  - UserId
+  - ProfileName
+  - HelpfulnessNumerator
+  - HelpfulnessDenominator
+  - Score
+  - Time
+  - Summary
 
-# Feature engineering parameters
+# set train/test split
+test_size: 0.20
 
+# to set the random seed
+random_state: 42
+# alogrithm parameters
+n_estimators: 100
+max_depth: 10
 
-# Set the random seed
-
-
-# Alogrithm parameters
-
-
-# Mappings for calss labels
+optimizer: adam
+loss: binary_crossentropy
+accuracy_metric: accuracy
