@@ -2,5 +2,4 @@
  Sentiment Classification on Amazon Food Reviews
 
 
- coding in progress....trying to finish by tomorrow,....
- 
+ coding in progress..
